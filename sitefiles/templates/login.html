@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset='utf-8'>
+    <title>Nath Play Videos</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body >
+    <div id="form-login">
+        <p>
+        <h1><b>Plataforma de Vídeos</b></h1>
+        </p>
+
+        <form action="{{ url_for('rota_video') }}" method="get">
+            <label for="nome_usuario">Usuário</label>
+            <input type="text" id="nome_usuario" required>
+            <br/> <br/>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</body>
+</html>
