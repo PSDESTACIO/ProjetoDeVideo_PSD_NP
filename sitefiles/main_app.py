@@ -1,9 +1,8 @@
-# Abre o aplicativo na porta 5500 e o roda.
 from flask import Flask, render_template # type: ignore
 
-app = Flask(__name__) #Recebe a aplicação
+app = Flask(__name__) # Recebe a aplicação
 
-#Rotas
+# Rotas
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -20,6 +19,6 @@ def rota_video():
 def rota_editar_video():
     return render_template('editar_videos.html')
 
-#Inicializa o projeto
+# Abre o aplicativo na porta 5500 e o roda.
 if __name__ == '__main__':
     app.run(debug = True, port = 5000) 
