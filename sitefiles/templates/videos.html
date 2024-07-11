@@ -11,15 +11,20 @@
     </head>
     <body>
         <nav style="text-align: center">
-            <h2>Nath Play Videos</h2>
+            <h1>Nath Play Vídeos</h1>
             <ul>
                 <li><a href="videos.html">Vídeos</a></li>
                 <li><a href="editar_videos.html">Editar Vídeos</a></li>
             </ul>
         </nav>
 
-        <form id="form-painel"> 
-            <button id="button-painel">Painel</button>
-        </form>
+        <div id="right-painel">
+            
+            <form action="{{ url_for('rota_usuario') }}" method="post"> 
+                <label><b>Bem vindo(a), {{nomeUsuario}}!</b></label>
+                <button id="button-painel">Sair</button>
+            </form>
+        </div>
+        
     </body>
 </html>
