@@ -32,3 +32,5 @@ def rota_editar_video():
 # Abre o aplicativo na porta 5000 e o roda.
 if __name__ == '__main__':
     app.run(debug = True, port = 5000)
+
+#tutorial Ana
