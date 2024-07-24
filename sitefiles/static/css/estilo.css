@@ -87,6 +87,27 @@ nav h2 {
     box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); /* Coloca uma sombra no botao */
 }
 
+#searchInput {
+    width: 50%; 
+    margin: 0 auto; 
+    padding: 10px;
+    margin-bottom: 2rem;
+}
+
+#tituloPagina {
+    text-align: center;
+    background-color: rgb(221, 244, 248);
+    padding-bottom: 2em;
+    padding-top: 2px;
+}
+
+.videocontainer {
+    background-color: rgb(221, 244, 248); 
+    padding: 20px; 
+    width: 50%; 
+    margin: 0 auto;
+}
+
 h3 {
     color: rgb(211, 32, 32)
 }
