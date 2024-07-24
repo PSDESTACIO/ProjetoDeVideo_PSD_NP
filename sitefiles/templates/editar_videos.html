@@ -21,21 +21,25 @@
         </nav>
 
         <div id="right-painel">
-            <form action="{{ url_for('rota_editar_video') }}" method="post"> 
+            <form action="{{ url_for('rota_usuario') }}" method="post"> 
                 <label><b>Bem vindo(a), {{nomeUsuario}}!</b></label>
                 <button id="button-painel">Sair</button>
             </form>
         </div>
 
-        <h1>Armazenar e Assistir Vídeo</h1>
-        <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
-            <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" required>
-            <input type="file" id="video-upload" name="video" accept="video/*" required>
-            <button type="submit">Enviar</button>
-            <br><br>
-            <textarea style="width: 512px; height: 64px;resize: none;" name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required></textarea>
-        </form>
+        <br>
+        <div style = "text-align: center;">
+            <h1 id = "titulo_pagina">Editar Vídeos</h1>
+            <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+                <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" required>
+                <input type="file" id="video-upload" name="video" accept="video/*" required>
+                <button type="submit">Enviar</button>
+                <br><br>
+                <textarea name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required></textarea>
+            </form>
+        </div>
 
+        <br>
         <div style="text-align: center">
             <h2>Seus Vídeos</h2>
 
