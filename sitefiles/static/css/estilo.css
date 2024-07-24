@@ -40,6 +40,24 @@ nav h2 {
     margin-bottom: 10px;
 }
 
+
+h3 {
+    color: rgb(211, 32, 32)
+}
+
+video {
+    width: 80%; 
+    max-width: 600px; 
+    max-height: 400px; 
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+    width: 512px; 
+    height: 64px;
+    resize: none;
+}
+
 #button_general{
     display: inline-block;
     padding: 10px 20px;
@@ -106,21 +124,4 @@ nav h2 {
     padding: 20px; 
     width: 50%; 
     margin: 0 auto;
-}
-
-h3 {
-    color: rgb(211, 32, 32)
-}
-
-video {
-    width: 80%; 
-    max-width: 600px; 
-    max-height: 400px; 
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-textarea {
-    width: 512px; 
-    height: 64px;
-    resize: none;
 }
