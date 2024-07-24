@@ -7,6 +7,8 @@
         <!-- Style Sheet -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <!-- Script -->
+        <script src="{{ url_for('static', filename='script/pesquisa.js') }}"></script> 
         <!-- Titulo da Aba -->
         <title>Nath Play Videos</title>
     </head>
@@ -26,5 +28,32 @@
             </form>
         </div>
         
+        <div id="tituloPagina">
+            <h1>Vídeos</h1>
+        </div>
+
+        <div style="text-align: center">
+            <h2>Seus Vídeos</h2>
+            
+            <!-- Pesquisa videos pelo seu titulo dinamicamente -->
+            <input type="text" id="searchInput" placeholder="Pesquisar">
+    
+            <div id="videoList">
+                <!-- Aplicativo Flask coloca todas os videos na pagina -->
+                {% for video in videos %}
+                <div class="video-container">
+                    <h3>{{ video.title }}</h3>
+
+                    <video controls>
+                        <source src="{{ url_for('static', filename='uploads/' + video.filename) }}" type="video/mp4">
+                    </video>
+
+                    <p style="color: rgb(51, 51, 51);">{{ video.description }}</p>
+                    <br>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+        </div>
     </body>
 </html>

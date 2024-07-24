@@ -24,9 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 txtValue = title.textContent || title.innerText;
 
                 // Se o nosso filtro é SUBSTRING do TÍTULO DO VÍDEO, mostra o vídeo.
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                if (txtValue.toLowerCase().indexOf(filter) > -1) 
+                {
                     videos[i].style.display = "";
-                } else {
+                } 
+                else 
+                {
                     videos[i].style.display = "none";
                 }
             }

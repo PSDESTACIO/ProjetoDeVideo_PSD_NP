@@ -1,6 +1,5 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.utils import secure_filename
-import sys
 import os
 import uuid
 
@@ -13,36 +12,14 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 # Tamanho MAX do Video.
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1048576  
 
+
 #Responsável pela extensão do arquivo
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'mp4', 'avi', 'mov', 'mkv'}
 
-# Rotas
-@app.route('/')
-def login():
-    return render_template('login.html')
 
-@app.route('/login.html', methods=['POST'])
-def rota_usuario():
-    session['nome_usuario_input'] = '' # Deixa a sessão com vazia
-    return render_template('login.html')
 
-@app.route('/logging', methods=['POST'])
-def rota_usuario_logando():
-    nomeUsuario = request.form['nome_usuario_input'] # Pega o input do formulario do login
-    session['nome_usuario_input'] = nomeUsuario  # Armazenar na sessão
-    return redirect(url_for('rota_video'))
-
-@app.route('/videos.html')
-def rota_video():
-    nomeUsuario = session.get('nome_usuario_input') # Pega o valor da sessão
-    return render_template('videos.html',nomeUsuario=nomeUsuario)
-
-@app.route('/editar_videos.html')
-def rota_editar_video():
-    # Pega o valor da sessão
-    nomeUsuario = session.get('nome_usuario_input') 
-
+def render_videolist():
     # Design feito a partir do projeto anterior do Belém.
     # Verifica se o vídeo e o título foram enviados no formulário
 
@@ -55,7 +32,8 @@ def rota_editar_video():
     # Ordena os arquivos por data de criação, do mais recente ao mais antigo
     video_files.sort(key=lambda x: os.path.getctime(os.path.join(app.config['UPLOAD_FOLDER'], x)), reverse=True) 
     
-    videos = []  # Cria uma lista para armazenar os vídeos e seus títulos
+    # Cria uma lista para armazenar os vídeos e seus títulos
+    videos = []  
     for video_file in video_files:
         
         title_file = video_file.rsplit('.', 1)[0] + '.title.txt' # Gera o nome do arquivo de título correspondente ao vídeo
@@ -81,6 +59,43 @@ def rota_editar_video():
         # Adiciona o vídeo e seu título à lista
         videos.append({'filename': video_file, 'title': title, 'description': description})
     
+    return videos
+
+
+
+# Rotas
+@app.route('/')
+def login():
+    return render_template('login.html')
+
+@app.route('/login.html', methods=['POST'])
+def rota_usuario():
+    # Deixa a sessão com vazia
+    session['nome_usuario_input'] = '' 
+    
+    return render_template('login.html')
+
+@app.route('/logging', methods=['POST'])
+def rota_usuario_logando():
+    # Pega o input do formulario do login
+    nomeUsuario = request.form['nome_usuario_input'] 
+    # Armazenar na sessão
+    session['nome_usuario_input'] = nomeUsuario 
+
+    return redirect(url_for('rota_video'))
+
+@app.route('/videos.html')
+def rota_video():
+    # Pega o valor da sessão
+    nomeUsuario = session.get('nome_usuario_input') 
+    videos = render_videolist()
+    return render_template('videos.html', nomeUsuario=nomeUsuario, videos=videos)
+
+@app.route('/editar_videos.html')
+def rota_editar_video():
+    # Pega o valor da sessão
+    nomeUsuario = session.get('nome_usuario_input') 
+    videos = render_videolist()
     return render_template('editar_videos.html', nomeUsuario=nomeUsuario, videos=videos)
 
 @app.route('/upload_video', methods=['POST'])
