@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Style Sheet -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
         <!-- Titulo da Aba -->
         <title>Nath Play Videos</title>
     </head>
@@ -15,7 +16,7 @@
 
                 <form action="{{ url_for('rota_usuario_logando') }}" method="post">
                     <label for="nome_usuario">Usuário</label>
-                    <input type="text" id="nome_usuario" name="nome_usuario_input" maxlength="20" required autofocus>
+                    <input type="text" id="nome_usuario" name="nome_usuario_input" maxlength="20" required autofocus autocomplete="username">
                     <br/> <br/>
                     <button type="submit" id="button_general">Entrar</button>
                 </form>

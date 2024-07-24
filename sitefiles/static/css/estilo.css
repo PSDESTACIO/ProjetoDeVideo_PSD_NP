@@ -1,5 +1,6 @@
 body {
-    font-family: Arial, sans-serif; /* Fonte do site inteiro */
+    font-family: 'Montserrat', sans-serif; /* Fonte do site inteiro */
+    font-weight: 100;
     background-color: rgb(242, 253, 255); /* Cor do fundo do site */ 
 }
 
@@ -84,4 +85,15 @@ nav h2 {
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Adiciona a sombra na transicao */
     box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); /* Coloca uma sombra no botao */
+}
+
+h3 {
+    color: rgb(211, 32, 32)
+}
+
+video {
+    width: 80%; 
+    max-width: 600px; 
+    max-height: 400px; 
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
 }

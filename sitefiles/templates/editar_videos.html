@@ -6,9 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Style Sheet -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
         <!-- Titulo da Aba -->
         <title>Nath Play Videos</title>
     </head>
+
     <body>
         <nav style="text-align: center">
             <h1>Nath Play Vídeos</h1>
@@ -19,12 +21,40 @@
         </nav>
 
         <div id="right-painel">
-            
-            <form action="{{ url_for('rota_usuario') }}" method="post"> 
+            <form action="{{ url_for('rota_editar_video') }}" method="post"> 
                 <label><b>Bem vindo(a), {{nomeUsuario}}!</b></label>
                 <button id="button-painel">Sair</button>
             </form>
         </div>
 
+        <h1>Armazenar e Assistir Vídeo</h1>
+        <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+            <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" required>
+            <input type="file" id="video-upload" name="video" accept="video/*" required>
+            <button type="submit">Enviar</button>
+            <br><br>
+            <textarea style="width: 512px; height: 64px;resize: none;" name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required></textarea>
+        </form>
+
+        <div style="text-align: center">
+            <h2>Seus Vídeos</h2>
+
+            <!-- Aplicativo Flask coloca todas os videos na pagina -->
+            {% for video in videos %}
+            <div style="background-color: rgb(221, 244, 248); padding: 20px; width: 50%; margin: 0 auto;">
+                <h3>{{ video.title }}</h3>
+                <video controls>
+                        <source src="{{ url_for('static', filename='uploads/' + video.filename) }}" type="video/mp4">
+                </video>
+                    <p style="color: rgb(51, 51, 51);">{{ video.description }}</p>
+                    <br>
+
+                <form action="{{ url_for('delete_video', filename=video.filename) }}" method="post">
+                    <button type="submit">Excluir</button>
+                </form>
+                    <br>
+        </div>
+        <br>
+            {% endfor %}
     </body>
 </html>
