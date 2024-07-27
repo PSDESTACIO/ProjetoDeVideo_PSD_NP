@@ -167,6 +167,13 @@ def delete_video(filename):
 
 @app.route('/editar_video.html/<filename>', methods=['POST'])
 def editar_video(filename):
+    # Constrói o caminho completo do arquivo de vídeo a ser deletado
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    # Gera os caminhos dos arquivos de título e descrição correspondentes ao vídeo
+    title_file_path = file_path.rsplit('.', 1)[0] + '.title.txt'
+    description_file_path = file_path.rsplit('.', 1)[0] + '.desc.txt'
+
     return redirect(url_for('rota_adicionar_video'))
 
 # Abre o aplicativo na porta 5000 e o roda.

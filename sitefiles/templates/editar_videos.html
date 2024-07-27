@@ -79,9 +79,12 @@
 
                     <div id="edit-form-{{ video.filename }}" class="edit-form" style="display:none;">
                         <form action="{{ url_for('editar_video', filename=video.filename) }}" method="post" onsubmit="return ConfirmarEdicao()">
-                            <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" value="{{ video.title }}" required>
-                            <input type="file" id="video-upload" value="{{ url_for('static', filename='uploads/' + video.filename) }}" name="video" accept="video/*" required>
-                            <textarea name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required>{{ video.description }}</textarea>
+                            <label>Título</label><br>
+                            <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" value="{{ video.title }}" required><br><br>
+                            <label>Vídeo</label><br>
+                            <input type="file" id="video-upload" value="{{ url_for('static', filename='uploads/' + video.filename) }}" name="video" accept="video/*" required><br><br>
+                            <label>Descrição</label><br>
+                            <textarea name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required>{{ video.description }}</textarea><br><br>
                             <button type="submit">Salvar</button>
                             <button type="button" onclick="EsconderPainelEditar('{{ video.filename }}')">Cancelar</button>
                         </form>
