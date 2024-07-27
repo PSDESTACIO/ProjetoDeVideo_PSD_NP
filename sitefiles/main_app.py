@@ -92,7 +92,7 @@ def rota_video():
     return render_template('videos.html', nomeUsuario=nomeUsuario, videos=videos)
 
 @app.route('/editar_videos.html')
-def rota_editar_video():
+def rota_adicionar_video():
     # Pega o valor da sessão
     nomeUsuario = session.get('nome_usuario_input') 
     videos = render_videolist()
@@ -131,7 +131,7 @@ def upload_video():
         #duration, width, height = get_video_metadata(file_path)
         #save_metadata_to_db(filename, title, description, duration, width, height)
 
-        return redirect(url_for('rota_editar_video'))
+        return redirect(url_for('rota_adicionar_video'))
     else:
         return redirect(request.url)
     
@@ -163,8 +163,11 @@ def delete_video(filename):
     except Exception as e:
         print(f"Erro ao deletar arquivo '{filename}': {str(e)}")
     
-    return redirect(url_for('rota_editar_video'))
+    return redirect(url_for('rota_adicionar_video'))
 
+@app.route('/editar_video.html/<filename>', methods=['POST'])
+def editar_video(filename):
+    return redirect(url_for('rota_adicionar_video'))
 
 # Abre o aplicativo na porta 5000 e o roda.
 if __name__ == '__main__':

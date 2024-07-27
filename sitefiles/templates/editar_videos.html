@@ -14,6 +14,7 @@
     </head>
 
     <body>
+        <!--Botões para a mudança de aba-->
         <nav style="text-align: center">
             <h1>Nath Play Vídeos</h1>
             <ul>
@@ -22,6 +23,7 @@
             </ul>
         </nav>
 
+        <!--Bem vindo mais o nome do usuário e o botão de sair-->
         <div id="right-painel">
             <form action="{{ url_for('rota_usuario') }}" method="post"> 
                 <label><b>Bem vindo(a), {{nomeUsuario}}!</b></label>
@@ -29,9 +31,10 @@
             </form>
         </div>
 
+        <!--Adicionar Vídeo-->
         <br>
         <div id="tituloPagina">
-            <h1>Editar Vídeos</h1>
+            <h1>Adicionar Vídeo</h1>
             <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
                 <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" required>
                 <input type="file" id="video-upload" name="video" accept="video/*" required>
@@ -61,9 +64,28 @@
                     <p style="color: rgb(51, 51, 51);">{{ video.description }}</p>
                     <br>
 
-                    <form action="{{ url_for('delete_video', filename=video.filename) }}" method="post">
-                        <button type="submit">Excluir</button>
-                    </form>
+                    <nav id="edit-buttons-{{ video.filename }}">
+                        <ul>
+                            <li>
+                                <form action="{{ url_for('delete_video', filename=video.filename) }}" method="post" onsubmit="return ConfirmarExclusao()">
+                                    <button type="submit">Excluir</button>
+                                </form>
+                            </li>
+                            <li>
+                                <button type="button" onclick="MostrarPainelEditar('{{ video.filename }}')">Editar</button>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div id="edit-form-{{ video.filename }}" class="edit-form" style="display:none;">
+                        <form action="{{ url_for('editar_video', filename=video.filename) }}" method="post" onsubmit="return ConfirmarEdicao()">
+                            <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" value="{{ video.title }}" required>
+                            <input type="file" id="video-upload" value="{{ url_for('static', filename='uploads/' + video.filename) }}" name="video" accept="video/*" required>
+                            <textarea name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required>{{ video.description }}</textarea>
+                            <button type="submit">Salvar</button>
+                            <button type="button" onclick="EsconderPainelEditar('{{ video.filename }}')">Cancelar</button>
+                        </form>
+                    </div>
 
                     <br>
                 </div>
@@ -71,4 +93,32 @@
                 {% endfor %}
             </div>
         </div>
+
+         
+         <script>
+        
+            //Utilizado para mostrar o painel de editar video
+            function MostrarPainelEditar(filename) {
+                document.getElementById('edit-buttons-' + filename).style.display = 'none';
+                document.getElementById('edit-form-' + filename).style.display = 'block';
+            }
+    
+            //Utilizado para esconder o painel de editar video
+            function EsconderPainelEditar(filename) {
+                document.getElementById('edit-form-' + filename).style.display = 'none';
+                document.getElementById('edit-buttons-' + filename).style.display = 'block';
+            }
+    
+            //Utilizado para confirmar ou não a exclusão do vídeo
+            function ConfirmarExclusao() {
+                return confirm("Tem certeza de que deseja excluir o vídeo?");
+            }
+
+            //Utilizado para confirmar ou não a exclusão do vídeo
+            function ConfirmarEdicao() {
+                return confirm("Tem certeza de que deseja modificar o vídeo?");
+            }
+        </script>
+
+    </body>
 </html>
