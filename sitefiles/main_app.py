@@ -174,10 +174,10 @@ def editar_video(filename):
     new_description = request.form['video_description']
 
     if new_file and allowed_file(new_file.filename):
-        new_title_file =filename.rsplit('_', 1)[0] + new_file.filename.removesuffix('.mp4') + '.title.txt'
-        new_description_file = filename.rsplit('_', 1)[0] + new_file.filename.removesuffix('.mp4') + '.desc.txt'
+        new_title_file =filename.rsplit('_')[0] + "_" + new_file.filename.removesuffix('.mp4') + '.title.txt'
+        new_description_file = filename.rsplit('_')[0] + "_" + new_file.filename.removesuffix('.mp4') + '.desc.txt'
 
-        new_file_transition = secure_filename(f"{filename.rsplit('_', 1)[0]+new_file.filename}")
+        new_file_transition = secure_filename(f"{filename.rsplit('_')[0]+'_'+new_file.filename}")
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_file_transition)
         new_file.save(file_path)
     else:
