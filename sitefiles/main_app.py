@@ -121,6 +121,7 @@ def upload_video():
         title_filename = filename.rsplit('.', 1)[0] + '.title.txt' # Gera o nome do arquivo do título correspondente ao vídeo
         description_filename = filename.rsplit('.', 1)[0] + '.desc.txt' # Gera o nome do arquivo da descrição correspondente ao vídeo
         
+        # Salva o título do vídeo em um arquivo de texto
         with open(os.path.join(app.config['UPLOAD_FOLDER'], title_filename), 'w') as f:
             f.write(title)
 
@@ -167,12 +168,27 @@ def delete_video(filename):
 
 @app.route('/editar_video.html/<filename>', methods=['POST'])
 def editar_video(filename):
-    # Constrói o caminho completo do arquivo de vídeo a ser deletado
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
-    # Gera os caminhos dos arquivos de título e descrição correspondentes ao vídeo
-    title_file_path = file_path.rsplit('.', 1)[0] + '.title.txt'
-    description_file_path = file_path.rsplit('.', 1)[0] + '.desc.txt'
+    new_title = request.form['video_title']
+    new_file = request.files['video']
+    new_description = request.form['video_description']
+
+    if new_file and allowed_file(new_file.filename):
+        new_title_file =filename.rsplit('_', 1)[0] + new_file.filename.removesuffix('.mp4') + '.title.txt'
+        new_description_file = filename.rsplit('_', 1)[0] + new_file.filename.removesuffix('.mp4') + '.desc.txt'
+
+        new_file_transition = secure_filename(f"{filename.rsplit('_', 1)[0]+new_file.filename}")
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_file_transition)
+        new_file.save(file_path)
+    else:
+        new_title_file = filename.rsplit('.', 1)[0] + '.title.txt'
+        new_description_file = filename.rsplit('.', 1)[0] + '.desc.txt'
+
+    with open(os.path.join(app.config['UPLOAD_FOLDER'], new_title_file), 'w') as f:
+        f.write(new_title)
+
+    with open(os.path.join(app.config['UPLOAD_FOLDER'], new_description_file), 'w') as f:
+        f.write(new_description)
 
     return redirect(url_for('rota_adicionar_video'))
 

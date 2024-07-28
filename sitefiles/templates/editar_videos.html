@@ -9,6 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
         <!-- Script -->
         <script src="{{ url_for('static', filename='script/pesquisa.js') }}"></script> 
+        <script src="{{ url_for('static', filename='script/botoes.js') }}"></script> 
         <!-- Titulo da Aba -->
         <title>Nath Play Videos</title>
     </head>
@@ -78,11 +79,12 @@
                     </nav>
 
                     <div id="edit-form-{{ video.filename }}" class="edit-form" style="display:none;">
-                        <form action="{{ url_for('editar_video', filename=video.filename) }}" method="post" onsubmit="return ConfirmarEdicao()">
+                        <form action="{{ url_for('editar_video', filename=video.filename) }}" method="post" enctype="multipart/form-data" onsubmit="return ConfirmarEdicao()">
                             <label>Título</label><br>
                             <input type="text" name="video_title" placeholder="Título do Vídeo" maxlength="50" value="{{ video.title }}" required><br><br>
-                            <label>Vídeo</label><br>
-                            <input type="file" id="video-upload" value="{{ url_for('static', filename='uploads/' + video.filename) }}" name="video" accept="video/*" required><br><br>
+                            <label style="color: blue;">Vídeo Atual: {{ video.filename }}</label><br><br>
+                            <label for="video-upload">Novo Vídeo (opcional)</label>
+                            <input type="file" id="video-upload" name="video" accept="video/*"><br><br>
                             <label>Descrição</label><br>
                             <textarea name="video_description" placeholder="Descrição do Vídeo (Máximo de 250 caracteres)" maxlength="250" required>{{ video.description }}</textarea><br><br>
                             <button type="submit">Salvar</button>
@@ -96,32 +98,6 @@
                 {% endfor %}
             </div>
         </div>
-
-         
-         <script>
-        
-            //Utilizado para mostrar o painel de editar video
-            function MostrarPainelEditar(filename) {
-                document.getElementById('edit-buttons-' + filename).style.display = 'none';
-                document.getElementById('edit-form-' + filename).style.display = 'block';
-            }
-    
-            //Utilizado para esconder o painel de editar video
-            function EsconderPainelEditar(filename) {
-                document.getElementById('edit-form-' + filename).style.display = 'none';
-                document.getElementById('edit-buttons-' + filename).style.display = 'block';
-            }
-    
-            //Utilizado para confirmar ou não a exclusão do vídeo
-            function ConfirmarExclusao() {
-                return confirm("Tem certeza de que deseja excluir o vídeo?");
-            }
-
-            //Utilizado para confirmar ou não a exclusão do vídeo
-            function ConfirmarEdicao() {
-                return confirm("Tem certeza de que deseja modificar o vídeo?");
-            }
-        </script>
 
     </body>
 </html>
