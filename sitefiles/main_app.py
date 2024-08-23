@@ -37,8 +37,10 @@ def render_videolist():
     videos = []  
     for video_file in video_files:
         
-        title_file = video_file.rsplit('.', 1)[0] + '.title.txt' # Gera o nome do arquivo de título correspondente ao vídeo
-        description_file = video_file.rsplit('.', 1)[0] + '.desc.txt' # Gera o nome do arquivo de descrição correspondente ao vídeo
+        local_file = video_file[:-4]
+
+        title_file = local_file + '.title.txt' # Gera o nome do arquivo de título correspondente ao vídeo
+        description_file = local_file + '.desc.txt' # Gera o nome do arquivo de descrição correspondente ao vídeo
 
         # Constrói o caminho completo do arquivo de título
         title_path = os.path.join(app.config['UPLOAD_FOLDER'], title_file) 
@@ -153,8 +155,10 @@ def upload_video():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
 
-        title_filename = filename.rsplit('.', 1)[0] + '.title.txt' # Gera o nome do arquivo do título correspondente ao vídeo
-        description_filename = filename.rsplit('.', 1)[0] + '.desc.txt' # Gera o nome do arquivo da descrição correspondente ao vídeo
+        local_file = filename[:-4]
+
+        title_filename = local_file + '.title.txt' # Gera o nome do arquivo do título correspondente ao vídeo
+        description_filename = local_file + '.desc.txt' # Gera o nome do arquivo da descrição correspondente ao vídeo
         
         # Salva o título do vídeo em um arquivo de texto
         with open(os.path.join(app.config['UPLOAD_FOLDER'], title_filename), 'w') as f:
@@ -178,9 +182,11 @@ def delete_video(filename):
         # Constrói o caminho completo do arquivo de vídeo a ser deletado
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
+        local_path = file_path[:-4]
+
         # Gera os caminhos dos arquivos de título e descrição correspondentes ao vídeo
-        title_file_path = file_path.rsplit('.', 1)[0] + '.title.txt'
-        description_file_path = file_path.rsplit('.', 1)[0] + '.desc.txt'
+        title_file_path = local_path + '.title.txt'
+        description_file_path = local_path + '.desc.txt'
         
         # Se o arquivo de vídeo existir, deleta o arquivo de vídeo, título e descrição
         if os.path.exists(file_path):
@@ -209,16 +215,26 @@ def editar_video(filename):
     new_file = request.files['video']
     new_description = request.form['video_description']
 
+    local_file = filename[:-4]
+
     if new_file and allowed_file(new_file.filename):
-        new_title_file =filename.rsplit('_')[0] + "_" + new_file.filename.removesuffix('.mp4') + '.title.txt'
-        new_description_file = filename.rsplit('_')[0] + "_" + new_file.filename.removesuffix('.mp4') + '.desc.txt'
+
+        new_local_file = new_file.filename[:-4]
+
+        new_title_file = filename.rsplit('_')[0] + "_" + new_local_file + '.title.txt'
+        new_description_file = filename.rsplit('_')[0] + "_" + new_local_file + '.desc.txt'
 
         new_file_transition = secure_filename(f"{filename.rsplit('_')[0]+'_'+new_file.filename}")
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_file_transition)
-        new_file.save(file_path)
+
+        if new_file and allowed_file(new_file.filename):
+            if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+                os.rename(os.path.join(app.config['UPLOAD_FOLDER'], local_file+'.title.txt'), os.path.join(app.config['UPLOAD_FOLDER'], new_title_file))
+                os.rename(os.path.join(app.config['UPLOAD_FOLDER'], local_file+'.desc.txt'), os.path.join(app.config['UPLOAD_FOLDER'], new_description_file))
+                os.rename(os.path.join(app.config['UPLOAD_FOLDER'], filename), os.path.join(app.config['UPLOAD_FOLDER'], new_file_transition))
+            new_file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_file_transition))
     else:
-        new_title_file = filename.rsplit('.', 1)[0] + '.title.txt'
-        new_description_file = filename.rsplit('.', 1)[0] + '.desc.txt'
+        new_title_file = local_file + '.title.txt'
+        new_description_file = local_file + '.desc.txt'
 
     with open(os.path.join(app.config['UPLOAD_FOLDER'], new_title_file), 'w') as f:
         f.write(new_title)
