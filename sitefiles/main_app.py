@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.utils import secure_filename
 import os
 import uuid
+import sqlite3
 
 app = Flask(__name__)
 
@@ -60,6 +61,40 @@ def render_videolist():
         videos.append({'filename': video_file, 'title': title, 'description': description})
     
     return videos
+
+def init_db():
+    with sqlite3.connect('videos.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS videos 
+        (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename TEXT NOT NULL,
+            title TEXT NOT NULL,
+            description TEXT,
+            upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        ''')
+        conn.commit()
+
+
+
+def save_metadata_to_db(filename, title, description):
+    with sqlite3.connect('videos.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+        INSERT INTO videos (filename, title, description)
+        VALUES (?, ?, ?)
+        ''', (filename, title, description))
+        conn.commit()
+
+
+
+def delete_metadata_from_db(filename):
+    with sqlite3.connect('videos.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM videos WHERE filename = ?', (filename,))
+        conn.commit()
 
 
 
@@ -132,6 +167,7 @@ def upload_video():
         #duration, width, height = get_video_metadata(file_path)
         #save_metadata_to_db(filename, title, description, duration, width, height)
 
+        save_metadata_to_db(filename, title, description)
         return redirect(url_for('rota_adicionar_video'))
     else:
         return redirect(request.url)
@@ -156,9 +192,9 @@ def delete_video(filename):
             if os.path.exists(description_file_path):
                 os.remove(description_file_path)
 
+            delete_metadata_from_db(filename)
             print(f"Arquivo '{filename}' deletado com sucesso.")
 
-            #delete_metadata_from_db(filename)
         else:
             print(f"Arquivo '{filename}' não encontrado para deletar.")
     except Exception as e:
@@ -194,4 +230,5 @@ def editar_video(filename):
 
 # Abre o aplicativo na porta 5000 e o roda.
 if __name__ == '__main__':
+    init_db()
     app.run(debug = True, port = 5000)
